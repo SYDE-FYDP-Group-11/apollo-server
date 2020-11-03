@@ -1,0 +1,22 @@
+{
+  "name": "hoth-server",
+  "version": "1.0.0",
+  "description": "Backend server for hoth",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ryan-mok/fydp-server.git"
+  },
+  "author": "Ryan Mok",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ryan-mok/fydp-server/issues"
+  },
+  "homepage": "https://github.com/ryan-mok/fydp-server#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
