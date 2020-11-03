@@ -4,7 +4,7 @@ const express = require("express");
 const app = express();
 var port = process.env.PORT || 3000;
 
-app.get("/1", (req, res, next) => {
+app.get("/1", (req, res) => {
 	res.json({
 		topicCoverage: 1,
 		publisherQuality: 1,
@@ -18,7 +18,7 @@ app.get("/1", (req, res, next) => {
 	});
 });
 
-app.get("/2", (req, res, next) => {
+app.get("/2", (req, res) => {
 	res.json({
 		topicCoverage: 5,
 		publisherQuality: 5,
@@ -32,7 +32,7 @@ app.get("/2", (req, res, next) => {
 	});
 });
 
-app.get("/news", (req, res, next) => {
+app.get("/news", (req, res) => {
 	let q = req.query.q;
 	var requestUrl = url.parse(url.format({
 		protocol: 'http',
@@ -59,7 +59,7 @@ app.get("/news", (req, res, next) => {
 	});
 });
 
-app.get("/echo", (req, res, next) => {
+app.get("/echo", (req, res) => {
 	res.json({headers: req.headers, body: req.body});
 });
 
