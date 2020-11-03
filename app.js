@@ -1,7 +1,6 @@
 const http = require('http');
 const url = require('url');
 const express = require("express");
-const { request } = require('express');
 const app = express();
 var port = process.env.PORT || 3000;
 
