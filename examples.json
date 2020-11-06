@@ -1,0 +1,37 @@
+{
+	"http://test.com/1": {
+		"topicCoverage": true,
+		"publisherQuality": true,
+		"publisherBias": 1,
+		"satire": true,
+		"evidenceCited": true,
+		"authorVerified": true,
+		"imageManipulated": true,
+		"urlSuspicious": true,
+		"headlineSuspicious": true
+	},
+
+	"http://test.com/2": {
+		"topicCoverage": false,
+		"publisherQuality": false,
+		"publisherBias": 5,
+		"satire": false,
+		"evidenceCited": false,
+		"authorVerified": false,
+		"imageManipulated": false,
+		"urlSuspicious": false,
+		"headlineSuspicious": false
+	},
+
+	"http://test.com/3": {
+		"topicCoverage": false,
+		"publisherQuality": null,
+		"publisherBias": 5,
+		"satire": null,
+		"evidenceCited": true,
+		"authorVerified": null,
+		"imageManipulated": false,
+		"urlSuspicious": null,
+		"headlineSuspicious": true
+	}
+}

@@ -1,38 +1,36 @@
 const http = require('http');
 const url = require('url');
 const express = require("express");
+const fs = require('fs');
 const app = express();
 var port = process.env.PORT || 3000;
 
-app.get("/1", (req, res) => {
-	res.json({
-		topicCoverage: 1,
-		publisherQuality: 1,
-		publisherBias: "Right",
-		satire: true,
-		evidenceCited: true,
-		authorVerified: true,
-		imageManipulated: true,
-		urlSuspicious: true,
-		headlineSuspicious: true
+app.get("/api", (req, res) => {
+	let url = req.query.url;
+	if (!url) throw "No url provided in API call";
+	fs.readFile('examples.json', (err, data) => {
+		if (err) throw err;
+		let testExamples = JSON.parse(data);
+		let example = testExamples[url];
+		res.json(example || {error: `No information is available for ${url}`});
 	});
 });
 
-app.get("/2", (req, res) => {
+app.get("/template", (req, res) => {
 	res.json({
-		topicCoverage: 5,
-		publisherQuality: 5,
-		publisherBias: "Left",
-		satire: false,
-		evidenceCited: false,
-		authorVerified: false,
-		imageManipulated: false,
-		urlSuspicious: false,
-		headlineSuspicious: false
+		topicCoverage: "Boolean?",
+		publisherQuality: "Boolean?",
+		publisherBias: "Integer?",
+		satire: "Boolean?",
+		evidenceCited: "Boolean?",
+		authorVerified: "Boolean?",
+		imageManipulated: "Boolean?",
+		urlSuspicious: "Boolean?",
+		headlineSuspicious: "Boolean?"
 	});
 });
 
-app.get("/news", (req, res) => {
+app.get("/newsapi", (req, res) => {
 	let q = req.query.q;
 	var requestUrl = url.parse(url.format({
 		protocol: 'http',
