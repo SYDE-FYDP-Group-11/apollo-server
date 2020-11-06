@@ -7,12 +7,13 @@ var port = process.env.PORT || 3000;
 
 app.get("/api", (req, res) => {
 	let url = req.query.url;
-	if (!url) throw "No url provided in API call";
+	if (!url) return res.status(404).send({error: `Missing url query parameter.`})
 	fs.readFile('examples.json', (err, data) => {
 		if (err) throw err;
 		let testExamples = JSON.parse(data);
 		let example = testExamples[url];
-		res.json(example || {error: `No information is available for ${url}`});
+		if (example) res.json(example)
+		else res.status(404).send({error: `No information is available for ${url}.`})
 	});
 });
 
