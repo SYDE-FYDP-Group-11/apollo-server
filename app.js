@@ -18,13 +18,13 @@ app.get("/api", (req, res) => {
 
 app.get("/template", (req, res) => {
 	res.json({
-		topicCoverage: "Boolean?",
-		publisherQuality: "Boolean?",
+		highCoverage: "Boolean?",
+		highPublisherQuality: "Boolean?",
 		publisherBias: "Integer?",
 		satire: "Boolean?",
 		evidenceCited: "Boolean?",
 		authorVerified: "Boolean?",
-		imageManipulated: "Boolean?",
+		imagesManipulated: "Integer?",
 		urlSuspicious: "Boolean?",
 		headlineSuspicious: "Boolean?"
 	});

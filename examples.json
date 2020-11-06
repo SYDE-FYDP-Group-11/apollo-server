@@ -1,36 +1,36 @@
 {
 	"http://test.com/1": {
-		"topicCoverage": true,
-		"publisherQuality": true,
-		"publisherBias": 1,
+		"highCoverage": true,
+		"highPublisherQuality": true,
+		"publisherBias": 0,
 		"satire": true,
 		"evidenceCited": true,
 		"authorVerified": true,
-		"imageManipulated": true,
+		"imagesManipulated": 0,
 		"urlSuspicious": true,
 		"headlineSuspicious": true
 	},
 
 	"http://test.com/2": {
-		"topicCoverage": false,
-		"publisherQuality": false,
-		"publisherBias": 5,
+		"highCoverage": false,
+		"highPublisherQuality": false,
+		"publisherBias": 2,
 		"satire": false,
 		"evidenceCited": false,
 		"authorVerified": false,
-		"imageManipulated": false,
+		"imagesManipulated": 1,
 		"urlSuspicious": false,
 		"headlineSuspicious": false
 	},
 
 	"http://test.com/3": {
-		"topicCoverage": false,
-		"publisherQuality": null,
-		"publisherBias": 5,
+		"highCoverage": false,
+		"highPublisherQuality": null,
+		"publisherBias": 1,
 		"satire": null,
 		"evidenceCited": true,
 		"authorVerified": null,
-		"imageManipulated": false,
+		"imagesManipulated": 5,
 		"urlSuspicious": null,
 		"headlineSuspicious": true
 	}
