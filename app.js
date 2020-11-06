@@ -22,12 +22,12 @@ app.get("/template", (req, res) => {
 		highCoverage: "Boolean?",
 		highPublisherQuality: "Boolean?",
 		publisherBias: "Integer?",
-		satire: "Boolean?",
+		notSatire: "Boolean?",
 		evidenceCited: "Boolean?",
 		authorVerified: "Boolean?",
 		imagesManipulated: "Integer?",
-		urlSuspicious: "Boolean?",
-		headlineSuspicious: "Boolean?"
+		urlNotSuspicious: "Boolean?",
+		headlineNotSuspicious: "Boolean?"
 	});
 });
 
