@@ -1,40 +1,4 @@
 {
-	"http://test.com/1": {
-		"highCoverage": true,
-		"highPublisherQuality": true,
-		"publisherBias": 0,
-		"notSatire": true,
-		"evidenceCited": true,
-		"authorVerified": true,
-		"imagesManipulated": 0,
-		"urlNotSuspicious": true,
-		"headlineNotSuspicious": true
-	},
-
-	"http://test.com/2": {
-		"highCoverage": false,
-		"highPublisherQuality": false,
-		"publisherBias": 2,
-		"notSatire": false,
-		"evidenceCited": false,
-		"authorVerified": false,
-		"imagesManipulated": 1,
-		"urlNotSuspicious": false,
-		"headlineNotSuspicious": false
-	},
-
-	"http://test.com/3": {
-		"highCoverage": false,
-		"highPublisherQuality": null,
-		"publisherBias": 1,
-		"notSatire": null,
-		"evidenceCited": true,
-		"authorVerified": null,
-		"imagesManipulated": 5,
-		"urlNotSuspicious": null,
-		"headlineNotSuspicious": true
-	},
-
 	"https://t.co/dzuJpS78nb?amp=1": {
 		"highCoverage": true,
 		"highPublisherQuality": true,
@@ -42,30 +6,6 @@
 		"notSatire": true,
 		"evidenceCited": false,
 		"authorVerified": true,
-		"imagesManipulated": 0,
-		"urlNotSuspicious": true,
-		"headlineNotSuspicious": true
-	},
-
-	"https://t.co/96OGTaAUS5?amp=1": {
-		"highCoverage": false,
-		"highPublisherQuality": false,
-		"publisherBias": null,
-		"notSatire": null,
-		"evidenceCited": null,
-		"authorVerified": null,
-		"imagesManipulated": 0,
-		"urlNotSuspicious": false,
-		"headlineNotSuspicious": true
-	},
-
-	"https://t.co/A3NmlqFy8D?amp=1": {
-		"highCoverage": true,
-		"highPublisherQuality": true,
-		"publisherBias": null,
-		"notSatire": true,
-		"evidenceCited": false,
-		"authorVerified": false,
 		"imagesManipulated": 0,
 		"urlNotSuspicious": true,
 		"headlineNotSuspicious": true
@@ -89,18 +29,6 @@
 		"publisherBias": 2,
 		"notSatire": true,
 		"evidenceCited": null,
-		"authorVerified": false,
-		"imagesManipulated": 0,
-		"urlNotSuspicious": true,
-		"headlineNotSuspicious": true
-	},
-
-	"https://t.co/P06GXPrL4V?amp=1": {
-		"highCoverage": true,
-		"highPublisherQuality": null,
-		"publisherBias": null,
-		"notSatire": true,
-		"evidenceCited": false,
 		"authorVerified": false,
 		"imagesManipulated": 0,
 		"urlNotSuspicious": true,
