@@ -93,5 +93,17 @@
 		"imagesManipulated": 0,
 		"urlNotSuspicious": true,
 		"headlineNotSuspicious": true
+	},
+
+	"https://t.co/P06GXPrL4V?amp=1": {
+		"highCoverage": true,
+		"highPublisherQuality": null,
+		"publisherBias": null,
+		"notSatire": true,
+		"evidenceCited": false,
+		"authorVerified": false,
+		"imagesManipulated": 0,
+		"urlNotSuspicious": true,
+		"headlineNotSuspicious": true
 	}
 }
