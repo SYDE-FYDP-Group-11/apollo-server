@@ -1,7 +1,13 @@
+if (process.env.NODE_ENV !== 'production') {
+	require('dotenv').config();
+}
+
 const http = require('http');
 const url = require('url');
 const express = require("express");
 const fs = require('fs');
+const twitter = require('./twitter');
+
 const app = express();
 var port = process.env.PORT || 3000;
 
@@ -29,6 +35,15 @@ app.get("/template", (req, res) => {
 		urlNotSuspicious: "Boolean?",
 		headlineNotSuspicious: "Boolean?"
 	});
+});
+
+app.get("/tweetlinks", (req, res) => {
+	(async () => {
+		let id = req.query.id || "1349441195496374275";
+		if (!id) return res.json({error: `Missing id query parameter.`})
+		tweet = await twitter.getTweet(id)
+		res.json(tweet.entities.urls.map(url => url.unwound_url).filter(url => url))
+	})()
 });
 
 app.get("/newsapi", (req, res) => {

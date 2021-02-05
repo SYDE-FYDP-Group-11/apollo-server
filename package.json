@@ -1,22 +1,28 @@
 {
-  "name": "hoth-server",
+  "name": "apollo-server",
   "version": "1.0.0",
-  "description": "Backend server for hoth",
+  "description": "Backend server for Apollo",
   "main": "app.js",
   "scripts": {
+    "start": "node app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ryan-mok/fydp-server.git"
+    "url": "git+https://github.com/SYDE-FYDP-Group-11/apollo-server.git"
   },
   "author": "Ryan Mok",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/ryan-mok/fydp-server/issues"
+    "url": "https://github.com/SYDE-FYDP-Group-11/apollo-server/issues"
   },
-  "homepage": "https://github.com/ryan-mok/fydp-server#readme",
+  "homepage": "https://github.com/SYDE-FYDP-Group-11/apollo-server#readme",
+  "engines": {
+    "node": ">=14.0.0"
+  },
   "dependencies": {
-    "express": "^4.17.1"
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "twitter-v2": "^1.0.2"
   }
 }
