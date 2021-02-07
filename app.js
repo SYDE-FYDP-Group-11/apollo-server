@@ -2,11 +2,11 @@ if (process.env.NODE_ENV !== 'production') {
 	require('dotenv').config();
 }
 
-const http = require('http');
-const url = require('url');
 const express = require("express");
 const fs = require('fs');
 const twitter = require('./twitter');
+const newsapi = require('./newsapi');
+const content_extractor = require('./content_extractor');
 
 const app = express();
 var port = process.env.PORT || 3000;
@@ -23,20 +23,6 @@ app.get("/api", (req, res) => {
 	});
 });
 
-app.get("/template", (req, res) => {
-	res.json({
-		highCoverage: "Boolean?",
-		highPublisherQuality: "Boolean?",
-		publisherBias: "Integer?",
-		notSatire: "Boolean?",
-		evidenceCited: "Boolean?",
-		authorVerified: "Boolean?",
-		imagesManipulated: "Integer?",
-		urlNotSuspicious: "Boolean?",
-		headlineNotSuspicious: "Boolean?"
-	});
-});
-
 app.get("/tweetlinks", (req, res) => {
 	(async () => {
 		let id = req.query.id || "1349441195496374275";
@@ -46,31 +32,20 @@ app.get("/tweetlinks", (req, res) => {
 	})()
 });
 
+app.get("/title", (req, res) => {
+	(async () => {
+		let url = req.query.url;
+		title = await content_extractor.getTitleFromArticle(url)
+		res.json(title)
+	})()
+});
+
 app.get("/newsapi", (req, res) => {
-	let q = req.query.q;
-	var requestUrl = url.parse(url.format({
-		protocol: 'http',
-		hostname: 'newsapi.org',
-		pathname: '/v2/everything',
-		query: {
-			q: q,
-			from: new Date().toISOString().split('T')[0],
-			sortBy: 'relevancy',
-			pageSize: '1',
-			apiKey: process.env.NEWS_API_KEY
-		}
-	}));
-	http.get(requestUrl, (resp) => {
-		let data = '';
-		resp.on('data', (chunk) => {
-			data += chunk;
-		});
-		resp.on('end', () => {
-			res.json(JSON.parse(data));
-		});
-	}).on("error", (err) => {
-		console.log("Error: " + err.message);
-	});
+	(async () => {
+		let keywords = req.query.keywords;
+		news = await newsapi.getArticleByKeywords(keywords)
+		res.json(news)
+	})()
 });
 
 app.get("/echo", (req, res) => {
