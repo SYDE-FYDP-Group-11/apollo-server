@@ -3,7 +3,6 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 const express = require("express");
-const fs = require('fs');
 const twitter = require('./twitter');
 const newsapi = require('./newsapi');
 const content_extractor = require('./content_extractor');
@@ -11,41 +10,17 @@ const content_extractor = require('./content_extractor');
 const app = express();
 var port = process.env.PORT || 3000;
 
-app.get("/api", (req, res) => {
-	let url = req.query.url;
-	if (!url) return res.json({error: `Missing url query parameter.`})
-	fs.readFile('examples.json', (err, data) => {
-		if (err) throw err;
-		let testExamples = JSON.parse(data);
-		let example = testExamples[url];
-		if (example) res.json(example)
-		else res.json({error: `No information is available for ${url}.`})
-	});
-});
-
-app.get("/tweetlinks", (req, res) => {
-	(async () => {
-		let id = req.query.id || "1349441195496374275";
-		if (!id) return res.json({error: `Missing id query parameter.`})
-		tweet = await twitter.getTweet(id)
-		res.json(tweet.entities.urls.map(url => url.unwound_url).filter(url => url))
-	})()
-});
-
-app.get("/title", (req, res) => {
-	(async () => {
-		let url = req.query.url;
-		title = await content_extractor.getTitleFromArticle(url)
-		res.json(title)
-	})()
-});
-
-app.get("/newsapi", (req, res) => {
-	(async () => {
-		let keywords = req.query.keywords;
-		news = await newsapi.getArticleByKeywords(keywords)
-		res.json(news)
-	})()
+app.get("/related_articles", (req, res) => {
+	let tweet_id = req.query.tweet_id;
+	if (!tweet_id) return res.json({error: `Missing tweet_id query parameter.`})
+	
+	twitter.getTweet(tweet_id)
+		.then(tweet => twitter.parseUrlFromTweet(tweet))
+		.then(url => content_extractor.getTitleFromArticle(url))
+		.then(title => `${title}`) // this mimics the topic extraction step, this will be replaced with keywords
+		.then(keywords => newsapi.getArticlesByKeywords(keywords))
+		.then(response => newsapi.formatResponse(response))
+		.then(result => res.json(result))
 });
 
 app.get("/echo", (req, res) => {

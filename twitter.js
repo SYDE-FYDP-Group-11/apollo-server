@@ -13,5 +13,9 @@ module.exports = {
             'tweet.fields': 'entities'
         })
         return tweets.data[0];
+    },
+
+    parseUrlFromTweet: (tweet) => {
+        return tweet.entities.urls.map(url => url.unwound_url).filter(url => url)[0]
     }
 }
