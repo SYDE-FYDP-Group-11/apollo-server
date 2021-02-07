@@ -12,6 +12,6 @@ module.exports = {
 		}
 
 		let title = $('head > title').text();
-  		return title
+		return title
 	}
 }

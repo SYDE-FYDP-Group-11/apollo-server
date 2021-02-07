@@ -12,8 +12,8 @@ var port = process.env.PORT || 3000;
 
 app.get("/related_articles", (req, res) => {
 	let tweet_id = req.query.tweet_id;
-	if (!tweet_id) return res.json({error: `Missing tweet_id query parameter.`})
-	
+	if (!tweet_id) return res.json({ error: `Missing tweet_id query parameter.` })
+
 	twitter.getTweet(tweet_id)
 		.then(tweet => twitter.parseUrlFromTweet(tweet))
 		.then(url => content_extractor.getTitleFromArticle(url))
@@ -24,11 +24,11 @@ app.get("/related_articles", (req, res) => {
 });
 
 app.get("/echo", (req, res) => {
-	res.json({headers: req.headers, body: req.body});
+	res.json({ headers: req.headers, body: req.body });
 });
 
-app.use(function(req, res) {
-	res.status(404).send({url: req.originalUrl + ' not found'})
+app.use(function (req, res) {
+	res.status(404).send({ url: req.originalUrl + ' not found' })
 });
 
 app.listen(port, () => {
