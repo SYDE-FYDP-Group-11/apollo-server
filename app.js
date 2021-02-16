@@ -5,7 +5,7 @@ if (process.env.NODE_ENV !== 'production') {
 const express = require("express");
 const twitter = require('./twitter');
 const newsapi = require('./newsapi');
-const content_extractor = require('./content_extractor');
+const document_parser = require('./document_parser');
 const topic_extractor = require('./topic_extractor');
 
 const app = express();
@@ -17,7 +17,7 @@ app.get("/related_articles", (req, res) => {
 
 	twitter.getTweet(tweet_id)
 		.then(tweet => twitter.parseUrlFromTweet(tweet))
-		.then(url => content_extractor.getTitleFromArticle(url))
+		.then(url => document_parser.getTitleFromDocument(url))
 		.then(title => topic_extractor.getTopicsFromText(title, 6))
 		.then(keywords => newsapi.getArticlesByKeywords(keywords))
 		.then(response => newsapi.formatResponse(response))

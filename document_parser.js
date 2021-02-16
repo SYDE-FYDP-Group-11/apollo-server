@@ -2,7 +2,11 @@ const axios = require('axios');
 const cheerio = require('cheerio');
 
 module.exports = {
-	getTitleFromArticle: async (url) => {
+	getArticleFromDocument: async (url) => {
+		const { data } = await axios.get(url)
+	},
+	
+	getTitleFromDocument: async (url) => {
 		const { data } = await axios.get(url)
 		let $ = cheerio.load(data);
 
