@@ -17,8 +17,9 @@ app.get("/related_articles", (req, res) => {
 
 	twitter.getTweet(tweet_id)
 		.then(tweet => twitter.parseUrlFromTweet(tweet))
-		.then(url => document_parser.getTitleFromDocument(url))
-		.then(title => topic_extractor.getTopicsFromText(title, 6))
+		.then(url => document_parser.getHtmlFromSite(url))
+		.then(html => document_parser.getContentForTopicExtraction(html))
+		.then(content => topic_extractor.getTopicsFromText(content, 6))
 		.then(keywords => newsapi.getArticlesByKeywords(keywords))
 		.then(response => newsapi.formatResponse(response))
 		.then(result => res.json(result))

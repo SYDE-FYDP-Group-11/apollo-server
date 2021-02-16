@@ -4,6 +4,7 @@ const newsapi = new NewsAPI(process.env.NEWS_API_KEY);
 
 module.exports = {
 	getArticlesByKeywords: async (keywords) => {
+		console.log(keywords)
 		let news = await newsapi.v2.everything({
 			q: keywords,
 			sortBy: 'relevancy',
