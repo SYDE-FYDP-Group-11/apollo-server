@@ -6,6 +6,7 @@ const express = require("express");
 const twitter = require('./twitter');
 const newsapi = require('./newsapi');
 const content_extractor = require('./content_extractor');
+const topic_extractor = require('./topic_extractor');
 
 const app = express();
 var port = process.env.PORT || 3000;
@@ -17,7 +18,7 @@ app.get("/related_articles", (req, res) => {
 	twitter.getTweet(tweet_id)
 		.then(tweet => twitter.parseUrlFromTweet(tweet))
 		.then(url => content_extractor.getTitleFromArticle(url))
-		.then(title => `${title}`) // this mimics the topic extraction step, this will be replaced with keywords
+		.then(title => topic_extractor.getTopicsFromText(title, 6))
 		.then(keywords => newsapi.getArticlesByKeywords(keywords))
 		.then(response => newsapi.formatResponse(response))
 		.then(result => res.json(result))
