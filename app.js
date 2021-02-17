@@ -27,6 +27,13 @@ app.get('/related_articles', (req, res) => {
 
 app.get('/sentiment_analysis', (req, res) => {
 	let tweet_id = req.query.tweet_id
+	if (!tweet_id) return res.json({ error: 'Missing tweet_id query parameter.' })
+
+	twitter.getTweet(tweet_id)
+		.then(tweet => twitter.parseUrlFromTweet(tweet))
+		.then(url => document_parser.getHtmlFromSite(url))
+		.then(html => document_parser.getArticleFromPage(html))
+		.then(result => res.json(result)) // Display parsed content by Readability
 })
 
 app.get('/echo', (req, res) => {
