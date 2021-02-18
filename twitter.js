@@ -16,6 +16,6 @@ module.exports = {
 	},
 
 	parseUrlFromTweet: (tweet) => {
-		return tweet.entities.urls.map(url => url.unwound_url).filter(url => url)[0]
+		return tweet.entities.urls.map(url => url.expanded_url).filter(url => url)[0]
 	}
 }
