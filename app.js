@@ -9,7 +9,18 @@ const document_parser = require('./document_parser')
 const topic_extractor = require('./topic_extractor')
 
 const app = express()
+const expressWs = require('express-ws')(app)
 var port = process.env.PORT || 3000
+
+app.ws('/ws', function (ws, req) {
+	ws.on('message', msg => {
+		ws.send(msg)
+	})
+
+	ws.on('close', () => {
+		console.log('WebSocket closed')
+	})
+})
 
 app.get('/related_articles', (req, res) => {
 	let tweet_id = req.query.tweet_id
