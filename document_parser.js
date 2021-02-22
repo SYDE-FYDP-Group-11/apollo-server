@@ -1,5 +1,4 @@
 const axios = require('axios')
-const cheerio = require('cheerio')
 const { Readability } = require('@mozilla/readability')
 const JSDOM = require('jsdom').JSDOM
 
@@ -9,17 +8,6 @@ module.exports = {
 		return data
 	},
 
-	getContentForTopicExtraction: (html) => {
-		let content = module.exports.getTitleFromPage(html)
-
-		let article = module.exports.getArticleFromPage(html)
-		if (article && article.excerpt) {
-			content += (' ' + article.excerpt)
-		}
-
-		return content
-	},
-
 	getArticleFromPage: (html) => {
 		let document = new JSDOM(html)
 		let article = new Readability(document.window.document).parse()
@@ -27,15 +15,9 @@ module.exports = {
 		return article
 	},
 
-	getTitleFromPage: (html) => {
-		let $ = cheerio.load(html)
-
-		let h1 = $('h1').text()
-		if (h1 !== '' && h1 !== undefined && h1 !== null) {
-			return h1
-		}
-
-		let title = $('head > title').text()
-		return title
+	getContentForTopicExtraction: async (article) => {
+		let content = article.title
+		if (article.excerpt) content += (' ' + article.excerpt)
+		return content
 	}
 }
