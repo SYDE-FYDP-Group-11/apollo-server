@@ -27,9 +27,9 @@ app.ws('/ws', function (ws, req) {
 					.then(content => topic_extractor.getTopicsFromText(content, 5))
 					.then(keywords => newsapi.getArticlesByKeywords(keywords))
 					.then(response => newsapi.formatResponse(response))
-					.then(result => ws.send(JSON.stringify({ 'tweet_id': tweet_id, 'type': 'related_articles', 'data': result })))
+					.then(result => ws.send(JSON.stringify({ tweet_id: tweet_id, type: 'related_articles', data: result })))
 
-				ws.send(JSON.stringify({ 'tweet_id': tweet_id, 'type': 'sentiment_analysis', 'data': 'sad' }))
+				ws.send(JSON.stringify({ tweet_id: tweet_id, type: 'sentiment_analysis', data: 'sad' }))
 			})
 	})
 
