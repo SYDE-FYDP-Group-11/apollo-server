@@ -42,6 +42,10 @@ app.get('/sse', function (req, res) {
 			])
 		})
 		.then(() => res.end())
+	
+	req.on('close', () => {
+		res.end()
+	})
 })
 
 // Legacy HTTP Request for Debugging
