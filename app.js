@@ -41,9 +41,11 @@ app.get('/sse', function (req, res) {
 				res.write(`data: ${JSON.stringify({ tweet_id: tweet_id, type: 'sentiment_analysis', content: 'sad' })}\n\n`)
 			])
 		})
+		.then(() => res.write('event: close\ndata:\n\n\n'))
 		.then(() => res.end())
 	
 	req.on('close', () => {
+		res.write('event: close\ndata:\n\n\n')
 		res.end()
 	})
 })
