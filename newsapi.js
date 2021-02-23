@@ -4,7 +4,7 @@ const NewsAPI = require('newsapi')
 const newsapi = new NewsAPI(process.env.NEWS_API_KEY)
 
 module.exports = {
-	getArticlesByKeywords: async (keywords) => {
+	getArticlesByKeywords: async keywords => {
 		let query = keywords.join(' ')
 		let news = await newsapi.v2.everything({
 			q: query,
@@ -14,7 +14,7 @@ module.exports = {
 		return news
 	},
 
-	formatResponse: (response) => {
+	formatResponse: response => {
 		articles = response.articles.map(article => {
 			return {
 				source: article.source.name,

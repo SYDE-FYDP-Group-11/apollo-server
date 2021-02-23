@@ -9,33 +9,39 @@ const document_parser = require('./document_parser')
 const topic_extractor = require('./topic_extractor')
 
 const app = express()
-const expressWs = require('express-ws')(app)
 var port = process.env.PORT || 3000
 
-app.ws('/ws', function (ws, req) {
-	ws.on('message', msg => {
-		msg = JSON.parse(msg)
-		let tweet_id = msg.tweet_id
-		if (!tweet_id) ws.send(JSON.stringify({ error: 'Missing tweet_id query parameter.' }))
+app.get('/sse', function (req, res) {
+	res.set({
+		'Cache-Control': 'no-cache',
+		'Content-Type': 'text/event-stream',
+		'Connection': 'keep-alive'
+	})
+	res.flushHeaders()
 
-		twitter.getTweet(tweet_id)
-			.then(tweet => twitter.parseUrlFromTweet(tweet))
-			.then(url => document_parser.getHtmlFromSite(url))
-			.then(html => document_parser.getArticleFromPage(html))
-			.then(article => {
+	let tweet_id = req.query.tweet_id
+	if (!tweet_id) {
+		res.write(JSON.stringify({ error: 'Missing tweet_id query parameter.' }))
+		res.end()
+		return
+	}
+
+	twitter.getTweet(tweet_id)
+		.then(tweet => twitter.parseUrlFromTweet(tweet))
+		.then(url => document_parser.getHtmlFromSite(url))
+		.then(html => document_parser.getArticleFromPage(html))
+		.then(article => {
+			return Promise.all([
 				document_parser.getContentForTopicExtraction(article)
 					.then(content => topic_extractor.getTopicsFromText(content, 5))
 					.then(keywords => newsapi.getArticlesByKeywords(keywords))
 					.then(response => newsapi.formatResponse(response))
-					.then(result => ws.send(JSON.stringify({ tweet_id: tweet_id, type: 'related_articles', content: result })))
+					.then(result => res.write(`data: ${JSON.stringify({ tweet_id: tweet_id, type: 'related_articles', content: result })}\n\n`)),
 
-				ws.send(JSON.stringify({ tweet_id: tweet_id, type: 'sentiment_analysis', content: 'sad' }))
-			})
-	})
-
-	ws.on('close', () => {
-		console.log('WebSocket closed')
-	})
+				res.write(`data: ${JSON.stringify({ tweet_id: tweet_id, type: 'sentiment_analysis', content: 'sad' })}\n\n`)
+			])
+		})
+		.then(() => res.end())
 })
 
 // Legacy HTTP Request for Debugging
