@@ -17,7 +17,8 @@ module.exports = {
 
 	getContentForTopicExtraction: async article => {
 		let content = article.title
-		if (article.excerpt) content += (' ' + article.excerpt)
+		if (article.textContent)
+			content += (' ' + article.textContent.substring(0, 399))
 		return content
 	}
 }
