@@ -4,7 +4,7 @@ if (process.env.NODE_ENV !== 'production') {
 
 const express = require('express')
 const twitter = require('./twitter')
-const newsapi = require('./newsapi')
+const datanews = require('./datanews')
 const document_parser = require('./document_parser')
 const topic_extractor = require('./topic_extractor')
 
@@ -20,8 +20,8 @@ app.get('/related_articles', (req, res) => {
 		.then(url => document_parser.getHtmlFromSite(url))
 		.then(html => document_parser.getContentForTopicExtraction(html))
 		.then(content => topic_extractor.getTopicsFromText(content, 5))
-		.then(keywords => newsapi.getArticlesByKeywords(keywords))
-		.then(response => newsapi.formatResponse(response))
+		.then(keywords => datanews.getArticlesByKeywords(keywords))
+		.then(response => datanews.formatResponse(response))
 		.then(result => res.json(result))
 })
 

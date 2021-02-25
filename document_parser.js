@@ -13,8 +13,8 @@ module.exports = {
 		let content = module.exports.getTitleFromPage(html)
 
 		let article = module.exports.getArticleFromPage(html)
-		if (article && article.excerpt) {
-			content += (' ' + article.excerpt)
+		if (article && article.textContent) {
+			content += (' ' + article.textContent.substring(0, 399))
 		}
 
 		return content
