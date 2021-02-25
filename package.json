@@ -11,7 +11,7 @@
     "type": "git",
     "url": "git+https://github.com/SYDE-FYDP-Group-11/apollo-server.git"
   },
-  "author": "Ryan Mok",
+  "author": "SYDE FYDP Group 11",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/SYDE-FYDP-Group-11/apollo-server/issues"
@@ -27,7 +27,6 @@
     "express": "^4.17.1",
     "jsdom": "^16.4.0",
     "lru-cache": "^6.0.0",
-    "newsapi": "^2.4.1",
     "twitter-v2": "^1.0.2"
   }
 }
