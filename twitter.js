@@ -6,7 +6,7 @@ const client = new Twitter({
 })
 
 module.exports = {
-	getTweet: async (id) => {
+	getTweet: async id => {
 		let tweets = await client.get('tweets', {
 			ids: id,
 			expansions: 'author_id',
@@ -15,7 +15,7 @@ module.exports = {
 		return tweets.data[0]
 	},
 
-	parseUrlFromTweet: (tweet) => {
+	parseUrlFromTweet: tweet => {
 		return tweet.entities.urls.map(url => url.expanded_url).filter(url => url)[0]
 	}
 }
