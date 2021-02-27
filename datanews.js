@@ -25,7 +25,7 @@ module.exports = {
 	formatResponse: (response) => {
 		articles = response.hits.map(article => {
 			return {
-				source: article.source.name,
+				source: article.source,
 				author: article.authors.join(', '),
 				title: article.title,
 				description: article.description,
