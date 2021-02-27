@@ -11,7 +11,6 @@ const topic_extractor = require('./topic_extractor')
 const datanews = require('./datanews')
 
 const LRU = require("lru-cache")
-const { html } = require('cheerio')
 const options = { max: 10, maxAge: 3.6e6 }
 var cache = new LRU(options)
 
