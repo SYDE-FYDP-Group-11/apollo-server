@@ -32,7 +32,7 @@ module.exports = {
 		let pubdate = $('meta[name="pubdate"]').attr('content')
 
 		let date = json_ld_date_modified || json_ld_date_published || article_published || bt_pubDate || dc_date_issued || pubdate
-		let image = $('meta[name="twitter:image"]').attr('content')
+		let image = $('meta[name="twitter:image"]').attr('content') || $('meta[name="twitter:image:src"]').attr('content')
 
 		return [date, image]
 	},
