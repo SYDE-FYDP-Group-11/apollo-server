@@ -58,7 +58,6 @@ app.get('/sse', function (req, res) {
 				document_parser.getContentForTopicExtraction(article)
 					.then(content => topic_extractor.getTopicsFromText(content, 5))
 					.then(keywords => datanews.getArticlesByKeywords(keywords))
-					.then(response => datanews.formatResponse(response))
 					.then(result => {
 						res.write(`data: ${JSON.stringify({ tweet_id: tweet_id, type: 'related_articles', content: result })}\n\n`)
 						related_articles = result
