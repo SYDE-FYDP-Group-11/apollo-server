@@ -25,13 +25,13 @@ module.exports = {
 	formatResponse: (response) => {
 		articles = response.hits.map(article => {
 			return {
-				source: article.source.name,
+				source: article.source,
 				author: article.authors.join(', '),
 				title: article.title,
 				description: article.description,
 				url: article.url,
 				image: article.imageUrl,
-				pubDate: article.pubDate
+				date: article.pubDate
 			}
 		})
 		return articles
