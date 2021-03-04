@@ -24,10 +24,10 @@ const deduplicateArticles = (articles, title, n) => {
 	return deduplicated_articles
 }
 
-const formatResponse =  (response) => {
-	articles = response.map(article => {
+const formatResponse = (response) => {
+	return response.map(article => {
 		return {
-			source: article.source.name,
+			source: article.source,
 			author: article.authors.join(', '),
 			title: article.title,
 			description: article.description,
@@ -36,7 +36,6 @@ const formatResponse =  (response) => {
 			date: article.pubDate
 		}
 	})
-	return articles
 }
 
 module.exports = {
