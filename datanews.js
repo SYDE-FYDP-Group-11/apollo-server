@@ -33,7 +33,7 @@ const formatResponse =  (response) => {
 			description: article.description,
 			url: article.url,
 			image: article.imageUrl,
-			pubDate: article.pubDate
+			date: article.pubDate
 		}
 	})
 	return articles

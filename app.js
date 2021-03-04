@@ -4,10 +4,11 @@ if (process.env.NODE_ENV !== 'production') {
 
 const express = require('express')
 const twitter = require('./twitter')
-const datanews = require('./datanews')
-const sentiment = require('./sentiment')
 const document_parser = require('./document_parser')
+const article_formatter = require('./article_formatter')
+const sentiment = require('./sentiment')
 const topic_extractor = require('./topic_extractor')
+const datanews = require('./datanews')
 
 const LRU = require("lru-cache")
 const options = { max: 10, maxAge: 3.6e6 }
@@ -34,6 +35,7 @@ app.get('/sse', function (req, res) {
 
 	var cached = cache.get(tweet_id)
 	if (cached) {
+		res.write(`data: ${JSON.stringify({ tweet_id: tweet_id, type: 'article_info', content: cached.article_info })}\n\n`)
 		res.write(`data: ${JSON.stringify({ tweet_id: tweet_id, type: 'sentiment_analysis', content: cached.sentiment_analysis })}\n\n`)
 		res.write(`data: ${JSON.stringify({ tweet_id: tweet_id, type: 'related_articles', content: cached.related_articles })}\n\n`)
 		res.write('event: close\ndata:\n\n\n')
@@ -41,14 +43,22 @@ app.get('/sse', function (req, res) {
 		return
 	}
 
-	let related_articles = ''
-	let sentiment_analysis = ''
+	let article_info, related_articles, sentiment_analysis
 	twitter.getTweet(tweet_id)
 		.then(tweet => twitter.parseUrlFromTweet(tweet))
 		.then(url => document_parser.getHtmlFromSite(url))
-		.then(html => document_parser.getArticleFromPage(html))
-		.then(article => {
+		.then(html => [document_parser.getArticleFromPage(html), html])
+		.then(article_html => {
+			let article = article_html[0]
+			let html = article_html[1]
 			return Promise.all([
+				document_parser.getDateAndImageFromPage(html)
+					.then(date_image => article_formatter.formatArticleInfo(article, date_image))
+					.then(result => {
+						res.write(`data: ${JSON.stringify({ tweet_id: tweet_id, type: 'article_info', content: result })}\n\n`)
+						article_info = result
+					}),
+
 				sentiment.getSentimentFromArticle(article)
 					.then(result => {
 						res.write(`data: ${JSON.stringify({ tweet_id: tweet_id, type: 'sentiment_analysis', content: result })}\n\n`)
@@ -64,7 +74,7 @@ app.get('/sse', function (req, res) {
 					})
 			])
 		})
-		.then(() => cache.set(tweet_id, { sentiment_analysis: sentiment_analysis, related_articles: related_articles }))
+		.then(() => cache.set(tweet_id, { article_info: article_info, sentiment_analysis: sentiment_analysis, related_articles: related_articles }))
 		.then(() => res.write('event: close\ndata:\n\n\n'))
 		.then(() => res.end())
 
