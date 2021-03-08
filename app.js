@@ -77,6 +77,12 @@ app.get('/sse', function (req, res) {
 		.then(() => cache.set(tweet_id, { article_info: article_info, sentiment_analysis: sentiment_analysis, related_articles: related_articles }))
 		.then(() => res.write('event: close\ndata:\n\n\n'))
 		.then(() => res.end())
+		.catch(error => {
+			console.error(error)
+			res.write(`data: ${JSON.stringify({ tweet_id: tweet_id, type: 'error', content: error.message })}\n\n`)
+			res.write('event: close\ndata:\n\n\n')
+			res.end()
+		})
 
 	req.on('close', () => {
 		res.write('event: close\ndata:\n\n\n')
