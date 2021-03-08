@@ -15,17 +15,17 @@ module.exports = {
 		magnitude = result.documentSentiment.magnitude
 		label = ''
 
-		if (score > 0.25) {
-			label = 'Mostly Positive'
+		if (score > 0.20) {
+			label = 'positive'
 		}
-		else if (score < -0.25) {
-			label = 'Mostly Negative'
+		else if (score < -0.20) {
+			label = 'negative'
 		}
 		else if (magnitude > 3.0) {
-			label = 'Mixed'
+			label = 'mixed'
 		}
 		else {
-			label = 'Neutral'
+			label = 'neutral'
 		}
 
 		return { label: label, score: score }
