@@ -11,6 +11,23 @@ module.exports = {
 		
 		const [result] = await client.analyzeSentiment({ document })
 
-		return result.documentSentiment
+		score = result.documentSentiment.score
+		magnitude = result.documentSentiment.magnitude
+		label = ''
+
+		if (score > 0.20) {
+			label = 'positive'
+		}
+		else if (score < -0.20) {
+			label = 'negative'
+		}
+		else if (magnitude > 3.0) {
+			label = 'mixed'
+		}
+		else {
+			label = 'neutral'
+		}
+
+		return { label: label, score: score }
 	}
 }
