@@ -46,15 +46,14 @@ app.get('/sse', function (req, res) {
 	let article_info, related_articles, sentiment_analysis
 	twitter.getTweet(tweet_id)
 		.then(tweet => twitter.parseUrlFromTweet(tweet))
-		.then(url => document_parser.getHtmlFromSite(url))
-		.then(html => [document_parser.getArticleFromPage(html), html])
-		.then(article_html => {
-			let article = article_html[0]
-			let html = article_html[1]
+		.then(url => Promise.all([document_parser.getHtmlFromSite(url), url]))
+		.then(([html, url]) => [document_parser.getArticleFromPage(html), html, url])
+		.then(([article, html, url]) => {
 			return Promise.all([
 				document_parser.getDateAndImageFromPage(html)
 					.then(date_image => article_formatter.formatArticleInfo(article, date_image))
 					.then(result => {
+						result.url = url
 						res.write(`data: ${JSON.stringify({ tweet_id: tweet_id, type: 'article_info', content: result })}\n\n`)
 						article_info = result
 					}),
