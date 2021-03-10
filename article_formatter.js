@@ -1,5 +1,5 @@
 module.exports = {
-	formatArticleInfo: async (article, date_image) => {
+	formatArticleInfo: (article, date_image) => {
 		return {
 			title: article.title,
 			byline: article.byline,

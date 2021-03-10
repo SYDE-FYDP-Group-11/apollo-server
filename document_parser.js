@@ -16,7 +16,7 @@ module.exports = {
 		return article
 	},
 
-	getDateAndImageFromPage: async html => {
+	getDateAndImageFromPage: html => {
 		let $ = cheerio.load(html)
 
 		let json_ld_date_modified, json_ld_date_published
@@ -42,7 +42,7 @@ module.exports = {
 		return [date, image]
 	},
 
-	getContentForTopicExtraction: async article => {
+	getContentForTopicExtraction: article => {
 		let content = article.title
 		if (article.textContent)
 			content += (' ' + article.textContent.substring(0, 399))
