@@ -48,10 +48,11 @@ app.get('/sse', function (req, res) {
 	let htmlPromise = urlPromise.then(url => document_parser.getHtmlFromSite(url))
 	let articlePromise = htmlPromise.then(html => document_parser.getArticleFromPage(html))
 
-	let articleInfoPromise = Promise.all([htmlPromise, articlePromise])
-		.then(([html, article]) => {
-			let date_image = document_parser.getDateAndImageFromPage(html)
-			let result = article_formatter.formatArticleInfo(article, date_image)
+	let articleInfoPromise = Promise.all([urlPromise, htmlPromise, articlePromise])
+		.then(([url, html, article]) => {
+			let date = document_parser.getDateFromPage(html)
+			let image = document_parser.getImageFromPage(html)
+			let result = article_formatter.formatArticleInfo(article, url, date, image)
 			res.write(`data: ${JSON.stringify({ tweet_id: tweet_id, type:'article_info', content: result })}\n\n`)
 			return result
 		})

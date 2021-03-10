@@ -1,12 +1,13 @@
 module.exports = {
-	formatArticleInfo: (article, date_image) => {
+	formatArticleInfo: (article, url, date, image) => {
 		return {
 			title: article.title,
 			byline: article.byline,
 			excerpt: article.excerpt,
 			site: article.siteName,
-			date: date_image[0],
-			image: date_image[1]
+			url: url,
+			date: date,
+			image: image
 		}
 	}
 }

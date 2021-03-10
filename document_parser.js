@@ -16,7 +16,7 @@ module.exports = {
 		return article
 	},
 
-	getDateAndImageFromPage: html => {
+	getDateFromPage: html => {
 		let $ = cheerio.load(html)
 
 		let json_ld_date_modified, json_ld_date_published
@@ -36,11 +36,13 @@ module.exports = {
 		let dc_date_issued = $('meta[name="DC.date.issued"]').attr('content')
 		let pubdate = $('meta[name="pubdate"]').attr('content')
 
-		let date = json_ld_date_modified || json_ld_date_published || article_modified_time || article_published_time || article_modified || article_published1 || article_published2 || bt_pubDate || dc_date_issued || pubdate
-		let image = $('meta[name="twitter:image"]').attr('content') || $('meta[name="twitter:image:src"]').attr('content')
-
-		return [date, image]
+		return json_ld_date_modified || json_ld_date_published || article_modified_time || article_published_time || article_modified || article_published1 || article_published2 || bt_pubDate || dc_date_issued || pubdate
 	},
+
+  getImageFromPage: html => {
+		let $ = cheerio.load(html)
+		return $('meta[name="twitter:image"]').attr('content') || $('meta[name="twitter:image:src"]').attr('content')
+  },
 
 	getContentForTopicExtraction: article => {
 		let content = article.title
