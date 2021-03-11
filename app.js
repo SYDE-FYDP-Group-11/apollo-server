@@ -76,8 +76,8 @@ app.get('/sse', function (req, res) {
 	Promise.all([articleInfoPromise, sentimentPromise, relatedArticlePromise])
 		.then(([article_info, sentiment_analysis, related_articles]) => {
 			cache.set(tweet_id, { article_info: article_info,
-														sentiment_analysis: sentiment_analysis,
-														related_articles: related_articles })
+				sentiment_analysis: sentiment_analysis,
+				related_articles: related_articles })
 			res.write('event: close\ndata:\n\n\n')
 			res.end()
 		}).catch(error => {
