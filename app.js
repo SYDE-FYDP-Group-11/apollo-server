@@ -50,9 +50,8 @@ app.get('/sse', function (req, res) {
 
 	let articleInfoPromise = Promise.all([urlPromise, htmlPromise, articlePromise])
 		.then(([url, html, article]) => {
-			let date = document_parser.getDateFromPage(html)
-			let image = document_parser.getImageFromPage(html)
-			let result = article_formatter.formatArticleInfo(article, url, date, image)
+			let pageElements = document_parser.getPageElements(html)
+			let result = article_formatter.formatArticleInfo(article, url, pageElements.date, pageElements.image)
 			res.write(`data: ${JSON.stringify({ tweet_id: tweet_id, type:'article_info', content: result })}\n\n`)
 			return result
 		})
