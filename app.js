@@ -43,8 +43,8 @@ app.get('/sse', function (req, res) {
 		return
 	}
 
-	let tweetPromise = twitter.getTweet(tweet_id)
-	let urlPromise = tweetPromise.then(tweet => twitter.parseUrlFromTweet(tweet))
+	let urlPromise = twitter.getTweet(tweet_id)
+		.then(tweet => twitter.parseUrlFromTweet(tweet))
 	let htmlPromise = urlPromise.then(url => document_parser.getHtmlFromSite(url))
 	let articlePromise = htmlPromise.then(html => document_parser.getArticleFromPage(html))
 
