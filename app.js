@@ -43,41 +43,43 @@ app.get('/sse', function (req, res) {
 		return
 	}
 
-	let article_info, related_articles, sentiment_analysis
-	twitter.getTweet(tweet_id)
+	let urlPromise = twitter.getTweet(tweet_id)
 		.then(tweet => twitter.parseUrlFromTweet(tweet))
-		.then(url => document_parser.getHtmlFromSite(url))
-		.then(html => [document_parser.getArticleFromPage(html), html])
-		.then(article_html => {
-			let article = article_html[0]
-			let html = article_html[1]
-			return Promise.all([
-				document_parser.getDateAndImageFromPage(html)
-					.then(date_image => article_formatter.formatArticleInfo(article, date_image))
-					.then(result => {
-						res.write(`data: ${JSON.stringify({ tweet_id: tweet_id, type: 'article_info', content: result })}\n\n`)
-						article_info = result
-					}),
+	let htmlPromise = urlPromise.then(url => document_parser.getHtmlFromSite(url))
+	let articlePromise = htmlPromise.then(html => document_parser.getArticleFromPage(html))
 
-				sentiment.getSentimentFromArticle(article)
-					.then(result => {
-						res.write(`data: ${JSON.stringify({ tweet_id: tweet_id, type: 'sentiment_analysis', content: result })}\n\n`)
-						sentiment_analysis = result
-					}),
-
-				document_parser.getContentForTopicExtraction(article)
-					.then(content => topic_extractor.getTopicsFromText(content, 5))
-					.then(keywords => datanews.getArticlesByKeywords(keywords, article.title))
-					.then(result => {
-						res.write(`data: ${JSON.stringify({ tweet_id: tweet_id, type: 'related_articles', content: result })}\n\n`)
-						related_articles = result
-					})
-			])
+	let articleInfoPromise = Promise.all([urlPromise, htmlPromise, articlePromise])
+		.then(([url, html, article]) => {
+			let pageElements = document_parser.getPageElements(html)
+			let result = article_formatter.formatArticleInfo(article, url, pageElements.date, pageElements.image)
+			res.write(`data: ${JSON.stringify({ tweet_id: tweet_id, type:'article_info', content: result })}\n\n`)
+			return result
 		})
-		.then(() => cache.set(tweet_id, { article_info: article_info, sentiment_analysis: sentiment_analysis, related_articles: related_articles }))
-		.then(() => res.write('event: close\ndata:\n\n\n'))
-		.then(() => res.end())
-		.catch(error => {
+
+	let sentimentPromise = articlePromise
+		.then(async article => {
+			let result = await sentiment.getSentimentFromArticle(article)
+			res.write(`data: ${JSON.stringify({ tweet_id: tweet_id, type: 'sentiment_analysis', content: result })}\n\n`)
+			return result
+		})
+
+	let relatedArticlePromise = articlePromise
+		.then(async article => {
+			let content = document_parser.getContentForTopicExtraction(article)
+			let keywords = await topic_extractor.getTopicsFromText(content, 5)
+			let result = await datanews.getArticlesByKeywords(keywords, article.title)
+			res.write(`data: ${JSON.stringify({ tweet_id: tweet_id, type: 'related_articles', content: result })}\n\n`)
+			return result
+		})
+
+	Promise.all([articleInfoPromise, sentimentPromise, relatedArticlePromise])
+		.then(([article_info, sentiment_analysis, related_articles]) => {
+			cache.set(tweet_id, { article_info: article_info,
+				sentiment_analysis: sentiment_analysis,
+				related_articles: related_articles })
+			res.write('event: close\ndata:\n\n\n')
+			res.end()
+		}).catch(error => {
 			console.error(error)
 			res.write(`data: ${JSON.stringify({ tweet_id: tweet_id, type: 'error', content: error.message })}\n\n`)
 			res.write('event: close\ndata:\n\n\n')
