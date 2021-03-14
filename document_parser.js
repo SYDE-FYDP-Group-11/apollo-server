@@ -20,8 +20,9 @@ const getDateFromPage = ($) => {
 	let bt_pubDate = $('meta[property="bt:pubDate"]').attr('content')
 	let dc_date_issued = $('meta[name="DC.date.issued"]').attr('content')
 	let pubdate = $('meta[name="pubdate"]').attr('content')
+	let last_modified = $('meta[name="last-modified"]').attr('content')
 
-	return json_ld_date_modified || json_ld_date_published || article_modified_time || article_published_time || article_modified || article_published1 || article_published2 || bt_pubDate || dc_date_issued || pubdate
+	return json_ld_date_modified || json_ld_date_published || article_modified_time || article_published_time || article_modified || article_published1 || article_published2 || bt_pubDate || dc_date_issued || pubdate || last_modified
 }
 
 const getImageFromPage = ($) => {
