@@ -26,7 +26,7 @@ const getDateFromPage = ($) => {
 }
 
 const getImageFromPage = ($) => {
-	return $('meta[name="twitter:image"]').attr('content') || $('meta[name="twitter:image:src"]').attr('content')
+	return $('meta[name="twitter:image"]').attr('content') || $('meta[name="twitter:image:src"]').attr('content') || $('meta[property="og:image"]').attr('content')
 }
 
 module.exports = {
