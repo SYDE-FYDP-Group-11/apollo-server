@@ -4,10 +4,18 @@ const JSDOM = require('jsdom').JSDOM
 const cheerio = require('cheerio')
 
 const getDateFromPage = ($) => {
-	let json_ld_date_modified, json_ld_date_published
+	let json_ld_date_modified, json_ld_date_published, json_ld
 	try {
-		let json_ld_html = $('script[type="application/ld+json"]')[0] || $('script[type="application/ld+json"]')
-		let json_ld = JSON.parse(json_ld_html.text)
+		try {
+			let json_ld_html = $('script[type="application/ld+json"]')[0] || $('script[type="application/ld+json"]') || $('script[type="application/ld+json"]')[0].children[0]
+			json_ld = JSON.parse(json_ld_html.text)
+		} catch (e) {}
+		
+		if (!json_ld) {
+			let json_ld_html = $('script[type="application/ld+json"]')[0].children[0].data
+			json_ld = JSON.parse(json_ld_html)
+		}
+
 		json_ld_date_modified = json_ld.dateModified
 		json_ld_date_published = json_ld.datePublished
 	} catch (e) {}
