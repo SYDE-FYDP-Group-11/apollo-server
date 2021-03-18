@@ -11,7 +11,7 @@ const topic_extractor = require('./topic_extractor')
 const datanews = require('./datanews')
 
 const LRU = require("lru-cache")
-const options = { max: 20, maxAge: 3.6e6 }
+const options = { max: 15, maxAge: 3.6e6 }
 var cache = new LRU(options)
 
 const app = express()
@@ -79,16 +79,19 @@ app.get('/sse', function (req, res) {
 				related_articles: related_articles })
 			res.write('event: close\ndata:\n\n\n')
 			res.end()
+			return
 		}).catch(error => {
 			console.error(error)
 			res.write(`data: ${JSON.stringify({ tweet_id: tweet_id, type: 'error', content: error.message })}\n\n`)
 			res.write('event: close\ndata:\n\n\n')
 			res.end()
+			return
 		})
 
 	req.on('close', () => {
 		res.write('event: close\ndata:\n\n\n')
 		res.end()
+		return
 	})
 })
 
