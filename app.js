@@ -11,7 +11,7 @@ const topic_extractor = require('./topic_extractor')
 const datanews = require('./datanews')
 
 const LRU = require("lru-cache")
-const options = { max: 20, maxAge: 3.6e6 }
+const options = { max: 10, maxAge: 3.6e6 }
 var cache = new LRU(options)
 
 const app = express()
