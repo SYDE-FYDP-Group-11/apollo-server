@@ -1,6 +1,6 @@
 {
   "name": "apollo-server",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Backend server for Apollo",
   "main": "app.js",
   "scripts": {
@@ -18,7 +18,7 @@
   },
   "homepage": "https://github.com/SYDE-FYDP-Group-11/apollo-server#readme",
   "engines": {
-    "node": "14.x.x"
+    "node": ">=14.0.0"
   },
   "dependencies": {
     "@google-cloud/language": "^4.2.1",
